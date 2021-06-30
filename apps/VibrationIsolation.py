@@ -629,6 +629,7 @@ def ForceTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, w
     if wantNormalised:
 
         for dampRat in dampRatios:
+            c = dampRat * 2 * np.sqrt(k * m)
             # print(dampRat)
             Tamp[row, :] = 1 / np.sqrt((1 - r ** 2) ** 2 + (2 * dampRat * r) ** 2)
             # This is just to setup the array phi!!!! Not correct calculations
@@ -666,6 +667,7 @@ def ForceTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, w
         # Working out Phase
         phase[row, :] = phi - alpha
         row = row + 1
+
     return Tamp, phase, r, wHz_axis, np.round(wn, decimals=2), np.round(wnHz, decimals=2), np.round(wd, decimals=2), np.round(
         wdHz, decimals=2)
 
