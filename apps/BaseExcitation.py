@@ -629,8 +629,8 @@ def MotionTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, 
         for dampRat in dampRatios:
             # print(dampRat)
             Tamp[row, :] = 1 / np.sqrt((1 - r ** 2) ** 2 + (2 * dampRat * r) ** 2)
-
-            beta = w
+            # To setup the array beta use copy DON't use beta=w as that will assign it!!!
+            beta = np.copy(w)
             i = 0
             for wval in w:
                 if m * wval ** 2 > k:
@@ -650,7 +650,8 @@ def MotionTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, 
             c = dampRat * 2 * np.sqrt(k * m)
             # print(dampRat)
             Tamp[row, :] = np.sqrt((k**2 + (c*w)**2)/((k - m * w ** 2) ** 2 + (c * w) ** 2))
-            beta = w
+            # To setup the array beta use copy DON't use beta=w as that will assign it!!!
+            beta = np.copy(w)
             i=0
             for wval in w:
                 if m * wval ** 2 > k:

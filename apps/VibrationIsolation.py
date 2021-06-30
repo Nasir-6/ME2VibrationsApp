@@ -632,8 +632,8 @@ def ForceTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, w
             c = dampRat * 2 * np.sqrt(k * m)
             # print(dampRat)
             Tamp[row, :] = 1 / np.sqrt((1 - r ** 2) ** 2 + (2 * dampRat * r) ** 2)
-            # This is just to setup the array phi!!!! Not correct calculations
-            phi = w
+            # To setup the array phi use copy DON't use phi=w as that will assign it!!!
+            phi = np.copy(w)
             # This next part is actual calculations
             i = 0
             for wval in w:
@@ -652,12 +652,13 @@ def ForceTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, w
             c = dampRat * 2 * np.sqrt(k * m)
             # print(dampRat)
             Tamp[row, :] = np.sqrt((k**2 + (c*w)**2)/((k - m * w ** 2) ** 2 + (c * w) ** 2))
-            # This is just to setup the array phi!!!! Not correct calculations
-            phi = w
+            # To setup the array phi use copy DON't use phi=w as that will assign it!!!
+            phi = np.copy(w)
             # This next part is actual calculations
             i=0
             for wval in w:
                 if m * wval ** 2 > k:
+                    # Shift up negative values by 180 deg
                     phi[i] = np.arctan(c * wval / (k - m * wval ** 2)) + np.pi
                 else:
                     phi[i] = np.arctan(c * wval / (k - m * wval ** 2))
