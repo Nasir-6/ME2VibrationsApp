@@ -623,21 +623,37 @@ def ForceTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, w
 
     Tamp = np.zeros((len(dampRatios), len(w)))
     phase = np.zeros((len(dampRatios), len(w)))
+    # Total rows is the total number of damping ratios
+    # Need to work out how to do it if you want to plot multiple damping ratios
+    row = 0
     if wantNormalised:
-        row = 0
+
         for dampRat in dampRatios:
             # print(dampRat)
             Tamp[row, :] = 1 / np.sqrt((1 - r ** 2) ** 2 + (2 * dampRat * r) ** 2)
-            phase[row, :] = np.arctan(-2 * dampRat * r / (1 - r ** 2))
-            phase[phase > 0] = phase[phase > 0] - np.pi
-            row = row + 1
+            # This is just to setup the array phi!!!! Not correct calculations
+            phi = w
+            # This next part is actual calculations
+            i = 0
+            for wval in w:
+                if m * wval ** 2 > k:
+                    phi[i] = np.arctan(c * wval / (k - m * wval ** 2)) + np.pi
+                else:
+                    phi[i] = np.arctan(c * wval / (k - m * wval ** 2))
+                i = i + 1
+
+        alpha = np.arctan(c * w / k)
+        # Working out Phase
+        phase[row, :] = phi - alpha
+        row = row + 1
     else:
-        row = 0
         for dampRat in dampRatios:
             c = dampRat * 2 * np.sqrt(k * m)
             # print(dampRat)
             Tamp[row, :] = np.sqrt((k**2 + (c*w)**2)/((k - m * w ** 2) ** 2 + (c * w) ** 2))
-            phi = np.arctan(c * w / (k - m * w ** 2)) + np.pi
+            # This is just to setup the array phi!!!! Not correct calculations
+            phi = w
+            # This next part is actual calculations
             i=0
             for wval in w:
                 if m * wval ** 2 > k:
@@ -648,12 +664,8 @@ def ForceTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, w
 
         alpha = np.arctan(c * w / k)
         # Working out Phase
-        # theta = phi + alpha  # + alpha as Phi is negative
         phase[row, :] = phi - alpha
-        #phase[row,:] = np.arctan(2 * dampRat * w ** 3 / wn ** 3 / (1 - (1 - 4 * dampRat ** 2) * w ** 2 / wn ** 2))
-        # phase[phase >= 0] = phase[phase >= 0] - np.pi
         row = row + 1
-
     return Tamp, phase, r, wHz_axis, np.round(wn, decimals=2), np.round(wnHz, decimals=2), np.round(wd, decimals=2), np.round(
         wdHz, decimals=2)
 

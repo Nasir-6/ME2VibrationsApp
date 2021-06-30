@@ -652,7 +652,7 @@ def update_output(n_clicks, w_slider_value, m, k, dampRatio, dampCoeff, x0, F0, 
         system_params = [""]
         return fig, input_warning_string, system_params, wAxisLimit, slider_marks[0], w_slider_value
     else:
-        # FIGURE OUT HOW TO SET NORMALISED VARIABLE!!!!!
+        # FIGURE OUT HOW TO SET NORMALISED VARIABLE & Chnage graphs accordingly!!!!!
         amp, phase, r, wHz_axis, wn, wnHz, wd, wdHz = FRF_Solver(m, k, dampRatios, wAxisLimit, wantNormalised=False)
 
         # THIS IS DUAL AXIS PLOT
@@ -816,7 +816,7 @@ def forcedSolver(m=1, k=1000, dampRatio=0.1, c=6.325, x0=0.1, Famp=0.1, wHz=10):
     x = t.copy()
 
     # Solving for Complete Forced Solution
-    # Displacement amplitdue from force ONLY
+    # Displacement amplitude from force ONLY
     x0f = Famp / np.sqrt((k - m * w ** 2) ** 2 + (c * w) ** 2)
     phasef = np.arctan(c * w / (k - m * w ** 2))
 

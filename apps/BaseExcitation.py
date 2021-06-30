@@ -623,28 +623,34 @@ def MotionTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, 
 
     Tamp = np.zeros((len(dampRatios), len(w)))
     phase = np.zeros((len(dampRatios), len(w)))
+    row = 0
     if wantNormalised:
-        row = 0
+
         for dampRat in dampRatios:
             # print(dampRat)
             Tamp[row, :] = 1 / np.sqrt((1 - r ** 2) ** 2 + (2 * dampRat * r) ** 2)
 
-            # NEED TO SORT OUT NORMALISED PHASE!!
-            gamma = np.arctan(2*dampRat*r / 1)
-            if m * w ** 2 > k:
-                beta = np.arctan(2*dampRat*r / (1 - r ** 2)) + np.pi
-            else:
-                beta = np.arctan(2*dampRat*r / (1 - r ** 2))
-            phase[row, :] = beta - gamma
-            phase[phase > 0] = phase[phase > 0] - np.pi
-            row = row + 1
+            beta = w
+            i = 0
+            for wval in w:
+                if m * wval ** 2 > k:
+                    beta[i] = np.arctan(c * wval / (k - m * wval ** 2)) + np.pi
+                else:
+                    beta[i] = np.arctan(c * wval / (k - m * wval ** 2))
+                i = i + 1
+
+        gamma = np.arctan(c * w / k)
+
+        # Working out Phase
+        phase[row, :] = beta - gamma
+        row = row + 1
     else:
-        row = 0
+
         for dampRat in dampRatios:
             c = dampRat * 2 * np.sqrt(k * m)
             # print(dampRat)
             Tamp[row, :] = np.sqrt((k**2 + (c*w)**2)/((k - m * w ** 2) ** 2 + (c * w) ** 2))
-            beta = np.arctan(c * w / (k - m * w ** 2)) + np.pi
+            beta = w
             i=0
             for wval in w:
                 if m * wval ** 2 > k:
@@ -656,9 +662,7 @@ def MotionTransmissibility_Solver(m=10, k=10, dampRatios=[0.25], wAxisLimit=50, 
         gamma = np.arctan(c * w / k)
 
         # Working out Phase
-        # theta = phi + alpha  # + alpha as Phi is negative
         phase[row, :] = beta - gamma
-        # phase[phase >= 0] = phase[phase >= 0] - np.pi
         row = row + 1
 
     return Tamp, phase, r, wHz_axis, np.round(wn, decimals=2), np.round(wnHz, decimals=2), np.round(wd, decimals=2), np.round(
