@@ -4,9 +4,10 @@ This project was a full scale web application as part of my Final Year Project i
 
 This was developed wholly using python with the help of a library called Dash Plotly. With the use of a Flask server it allowed the smooth integration of a python backend with the responsive capablities of several libraries such as Bootstrap, React.js and Plotly.js as demonstrated in the gif below.
 
-The [original application](https://me2vibrationsapp.herokuapp.com/apps/SDOF) was deployed using Heroku. Additionally having seen the promising benefits of the application, the Imperial Visualisations (ImpVis) team had revamped it for their servers with the aim of utilising it for future ME2 cohorts on the [ImpVis server](https://impvis.co.uk/launch/me2-vibrations-single-degree-of-freedom-v3/index.html?collection=38).
+The original application was deployed using Heroku. But having seen the promising benefits of the application, the Imperial Visualisations (ImpVis) team had revamped it for their servers with the aim of utilising it for future ME2 cohorts on the [ImpVis server](https://impvis.co.uk/launch/me2-vibrations-single-degree-of-freedom-v3/index.html?collection=38).
 
 ## What I learnt
+
 - How to plan and develop a web application from start to finish
 - Managing client expectations
 - Deploying a Dash application using Heroku
